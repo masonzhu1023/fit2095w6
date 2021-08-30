@@ -10,7 +10,12 @@ fullname:{
 lastname:String,
 DOB:Date,
 address:{
-    State:String,
+    State:{
+        type:String,
+        required:true,
+        minLength:[2],
+        maxLength:[3],
+    },
     Suburb:String,
     Street:String,
     Unit:Number,

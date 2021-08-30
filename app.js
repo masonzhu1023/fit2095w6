@@ -24,15 +24,41 @@ app.get("/adddoctor",function(req,res){
     console.log("Add new doctor request")
     res.sendFile(path.join(__dirname,"views","adddoctor.html"));
 })
+//post request for doctor
 app.post("/doctorpost",function(req,res){
     let newDocObj=req.body;
     let aDoctor= new doctors({
         fullname:newDocObj.fullname,
         lastname:newDocObj.lastname,
         dob:newDocObj.dob,
+        state:newDocObj.state,
+        suburb:newDocObj.suburb,
+        street:newDocObj.street,
+        unit:newDocObj.unit,
 
 });
+//saving process for new doctor
 aDoctor.save(function(err){
+    if(err){
+        print(err);
+        return;
+    }
+    res.send("Saved successfully");
+})
+});
+//post request for patient
+app.post("/patientpost",function(req,res){
+    let newPatObj=req.body;
+    let aPatient= new patient({
+        fullname:newPatObj.fullname,
+        doctor:doctor._id,
+        age:newPatObj.age,
+        dateofvisit:newPatObj.dateofvisit,
+        casedesc:newPatObj.casedesc,
+
+});
+//saving process for new doctor
+aPatient.save(function(err){
     if(err){
         print(err);
         return;
@@ -45,6 +71,7 @@ app.get("/addpatient",function(req,res){
     console.log("Add new patient request")
     res.sendFile(path.join(__dirname,"views","addpatient.html"));
 })
+
 //delete patient page
 app.get("/deletepatient",function(req,res){
     console.log("delete patient request")
@@ -59,6 +86,15 @@ app.get("/listpatient",function(req,res){
 app.get("/listdoctor",function(req,res){
     console.log("doctorlist request")
     res.sendFile(path.join(__dirname,"views","listdoctor.html"));
+})
+//update doctor page
+app.get("/updatedoctor",function(req,res){
+    console.log("update doctor request")
+    res.sendFile(path.join(__dirname,"views","updatedoctor.html"));
+})
+//404 page
+app.get("*",function(req,res){
+    res.render("404.html");
 })
 
 mongoose.connect(url,function(err){
