@@ -107,16 +107,22 @@ app.get("/updatedoctor",function(req,res){
     res.sendFile(path.join(__dirname,"views","updatedoctor.html"));
 })
 //post request for update doctor
-app.post("/postdoctor",function(req,res){
-    let newDocObj=req.body;
-    let filter={numberPatients:newDocObj.numberPatients};
-    doctor.updateOne(filter,function(err,doc){
-        res.redirect("/listdoctor");
-    })
+app.post("/updatedoctor",function(req,res){
+    // let newDocObj=req.body;
+    // let filter={numberPatients:newDocObj.numberPatients+1};
+    // doctors.updateOne(filter,function(err,doc){
+    //     res.redirect("/listdoctor");
+    // })
+    doctors.findOneAndUpdate({_id:doctors._id},
+        {$inc:{numberPatients:1}} ,
+        function(err,doc){
+            res.redirect("/listdoctor");
+
+        } )
 })
 //404 page
 app.get("*",function(req,res){
-    res.render("404.html");
+    res.render("error.html");
 })
 
 mongoose.connect(url,function(err){
