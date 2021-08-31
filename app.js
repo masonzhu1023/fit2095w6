@@ -43,7 +43,7 @@ aDoctor.save(function(err){
         print(err);
         return;
     }
-    res.send("Saved successfully");
+    console.log("Saved successfully");
     res.redirect("/listdoctor");
 })
 });
