@@ -8,7 +8,7 @@ const patient=require("./models/patient");
 const path=require("path");
 let viewsPath = __dirname + "/views/";
 
-app.use(express.urlencoded({ extended: true }));
+
 
 app.engine("html", require("ejs").renderFile);
 app.set("view engine", "html");
