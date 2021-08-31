@@ -34,7 +34,7 @@ app.post("/doctorpost",function(req,res){
         state:newDocObj.state,
         suburb:newDocObj.suburb,
         street:newDocObj.street,
-        unit:newDocObj.unit,
+        unit:newDocObj.unit*1,
 
 });
 //saving process for new doctor
@@ -44,6 +44,7 @@ aDoctor.save(function(err){
         return;
     }
     res.send("Saved successfully");
+    res.redirect("/listdoctor");
 })
 });
 //post request for patient
@@ -51,19 +52,20 @@ app.post("/patientpost",function(req,res){
     let newPatObj=req.body;
     let aPatient= new patient({
         fullname:newPatObj.fullname,
-        doctor:doctor._id,
+        doctor:newPatObj.doctor,
         age:newPatObj.age,
         dateofvisit:newPatObj.dateofvisit,
         casedesc:newPatObj.casedesc,
 
 });
-//saving process for new doctor
+//saving process for new patient
 aPatient.save(function(err){
     if(err){
         print(err);
         return;
     }
     res.send("Saved successfully");
+    res.redirect("/listpatient");
 })
 });
 //Add patient page
@@ -77,20 +79,40 @@ app.get("/deletepatient",function(req,res){
     console.log("delete patient request")
     res.sendFile(path.join(__dirname,"views","deletepatient.html"));
 })
+//post request for delete patient
+app.post("/deletepatient",function(req,res){
+   let newPatObj= req.body;
+   let filter ={fullname:newPatObj.fullname};
+   patient.deleteOne(filter,function(err,doc){
+   res.redirect("/listpatient");//redirect the client to list patient page
+   })
+   }
+)
 //patient list page
 app.get("/listpatient",function(req,res){
-    console.log("patient list request")
-    res.sendFile(path.join(__dirname,"views","listpatient.html"));
+    patient.find({},function(err,patient){
+        res.render('/listpatient',{patient:patient});
+    });
 })
 //doctor list page
 app.get("/listdoctor",function(req,res){
     console.log("doctorlist request")
-    res.sendFile(path.join(__dirname,"views","listdoctor.html"));
+    doctors.find({},function(err,doctors){
+        res.sendFile(path.join(__dirname,"views","listdoctor.html"));
+    });
 })
 //update doctor page
 app.get("/updatedoctor",function(req,res){
     console.log("update doctor request")
     res.sendFile(path.join(__dirname,"views","updatedoctor.html"));
+})
+//post request for update doctor
+app.post("/postdoctor",function(req,res){
+    let newDocObj=req.body;
+    let filter={numberPatients:newDocObj.numberPatients};
+    doctor.updateOne(filter,function(err,doc){
+        res.redirect("/listdoctor");
+    })
 })
 //404 page
 app.get("*",function(req,res){

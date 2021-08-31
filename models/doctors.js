@@ -1,6 +1,6 @@
 const mongoose= require ("mongoose");
 
-const doctorsSchema= mongoose.Schema({
+const doctorSchema= mongoose.Schema({
 _id: {type:mongoose.Schema.Types.ObjectId,
 auto:true},
 fullname:{
@@ -9,17 +9,15 @@ fullname:{
 },
 lastname:String,
 DOB:Date,
-address:{
-    State:{
-        type:String,
-        required:true,
-        minLength:[2],
-        maxLength:[3],
-    },
-    Suburb:String,
-    Street:String,
-    Unit:Number,
+state:{
+    type:String,
+    required:true,
+    minLength:[2],
+    maxLength:[3],
 },
+Suburb:String,
+Street:String,
+Unit:Number,
 numberPatients:{
     type:Number,
     validate:{
@@ -31,4 +29,4 @@ numberPatients:{
 }
 });
 
-module.exports = mongoose.model('Doctors', doctorsSchema);
+module.exports = mongoose.model('Doctors', doctorSchema);

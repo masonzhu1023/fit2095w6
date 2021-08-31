@@ -26,7 +26,7 @@ dateofvisit:{
 casedesc:{
     type:String,
     required:true,
-    minLength:[10,"casedesc length should be at least 10 characters"]
+    minLength:[10]
 },
 });
 
