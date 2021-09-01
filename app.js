@@ -98,7 +98,7 @@ app.get("/listpatient",function(req,res){
 app.get("/listdoctor",function(req,res){
     console.log("doctorlist request")
     doctors.find({},function(err,doctors){
-        res.sendFile(path.join(__dirname,"views","listdoctor.html"));
+        res.render('/listdoctor',{doctors:doctors});
     });
 })
 //update doctor page
@@ -133,6 +133,14 @@ mongoose.connect(url,function(err){
     print("Successfully connected");
 
 });
+
+//extra task
+app.get("/listdoctor1",function(req,res){
+   doctors.find({numberPatients:{$lte:5}},function(err,doctors){
+    res.render('/listpatient',{patient:patient});
+    });
+})
+
 //insert a doctor to the collection
 // let aDoctor= new doctors({
 //     //_id:new mongoose.Types.ObjectId(),
